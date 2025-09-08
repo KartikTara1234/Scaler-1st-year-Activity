@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Card</title>
+    <style>
+        .card {
+            display: flex;
+            border: 1px solid #ccc;
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .photo {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .photo img {
+            width: 100%;
+            height: auto;
+        }
+        .content {
+            flex: 1;
+        }
+        .text {
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                flex-direction: column;
+                width: 70vw;
+                padding: 10px;
+            }
+            .photo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            button {
+                width: 90%;
+                display: block;
+                margin: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="photo">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAlwMBIgACEQEDEQH/xAAbAAEAAwADAQAAAAAAAAAAAAAABAUGAQIDB//EADYQAAICAQIDBQQJBAMAAAAAAAABAgMEBRESITETIkFRcVJhodEUIzJCU4GRksFDYrHhFTM0/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAER/9oADAMBAAIRAxEAPwD7KAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4ZOZj43/AG2Li9lc2QdS1Jwcqcd95fan5e5FO25NtttvxZYLazWnv9VTy85M8v8Amb/w6/iVoLiLirWo/wBalr3we5Y4+TTkLemal5rx/Qyx2hJwkpRbjJdGmSwawFdpuo/SNqrtlb4P2ixIoAAAAAAAAAAAAAELVcp42Pwwf1lnKPuXiyaZ7V7e0zZrwh3V/IEIAGkAAEAABzFuMk4tpp8mjS4GT9Kx42P7XSXqZks9Ct4cidT6TjuvVEqrsAEUAAAAAAAAAAAy+Zzy72+vaS/yagzep19nnXJ+MuJfmWJUUAFQAAAAACXpX/vq296+DIhYaJXx5vF4Qi3/AAKq+ABlQAAAAAAAAAACr1zH4oRvgucOUvTzLQSSlFxa3TWzQGRBN1HBliy4oJypb5Py9zIRpAABAABQ0Gj4/Y43HJbTse+3kvAg6Xp7ulG65bVron97/ReE0AARQAAAAAAAAAAAeeRkVY8OO2Wy8F4v0KbK1a63u0rs4fq38gL2UeKLi1un1TRV5Wjwk3LGmof2y6EPT8+dFv105Sqlylu99veaBNSipLZp9Niozdun5Vb50t++PNHl9Gv/AAbP2s1RwNMZyrTsq18quFecnsWWLpNVbUrn2kvLbulidbJxrhKc2lGK3bY0dlyXL0BnMrOuuuc4zlCG/dintsScXV7Id3IXGvaXJr5kVdA61WQtgp1SUovxR2AAAAAAAAAEXOzYYlfNcVj+zH5nfMyY4tLskt30jHzZm7rZ3WSsse8pPdsDm66y+xztlxSfwPMA0gTcHULMbuSXHX5b9PQhADSU6ji2pbWKMvKfI9nfT+LX+5GVBMNaK/U8apPafaS8FD5lNmZtmW+/3YLpBEYDDQAFHti5NuLZxVPl96L6S9TQ4eVXl1cdbe/3ovrEzB64188a1WVt+9eaGDUg6UWwvqjZW91JfodzKgAABtLr+YIGs5HZY3Zxe0rOX5AVWoZTyr3JfYjyj6eZFANIAAIAAAAAAAAAAAAAqfpGV2F/Zzf1c+Xo/Bl+ZE0mm5H0jFjKT767svVEEoAEVyZzVre1zZpPeMO6v5+JobJquuU30im2ZNtyk5Pq+bLErgAFQAAAAAAAAAAAAAAAALHQ7uDJdT6WLl6orj1xrXTkVWezJMDUg5ODLSPqD2wb9vYZmF0QBqJXIACAAAAAAAAAAAAAAAAAfRgBWrpbdUG+rijkAyr/2Q==" alt="Sample">
+        </div>
+        <div class="content">
+            <div class="text">
+                <h2>Card Title</h2>
+                <p>This is some sample text for the card. It describes the content on the right side of the photo.</p>
+            </div>
+            <div class="buttons">
+                <button>Action 1</button>
+                <button>Action 2</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
