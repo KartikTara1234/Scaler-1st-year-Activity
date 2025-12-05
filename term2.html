@@ -25,12 +25,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Animated Gradient Background */
             background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: var(--text-color);
-            overflow: hidden; /* Prevent scrollbars from decorative circles */
+            overflow: hidden;
         }
 
         @keyframes gradientBG {
@@ -96,31 +95,34 @@
             display: flex;
             gap: 10px;
             margin-bottom: 2rem;
+            justify-content: center;
         }
 
-        input[type="text"] {
-            flex: 1;
+        input[type="number"] {
+            width: 120px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 12px 15px;
             color: white;
-            font-size: 1rem;
+            font-size: 1.2rem;
             outline: none;
             transition: all 0.3s ease;
+            text-align: center;
         }
 
-        input[type="text"]::placeholder {
+        input[type="number"]::placeholder {
             color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
         }
 
-        input[type="text"]:focus {
+        input[type="number"]:focus {
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
         .glass-btn {
-            padding: 12px 20px;
+            padding: 12px 30px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
@@ -131,7 +133,7 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
 
         .glass-btn:hover {
@@ -144,171 +146,152 @@
             transform: scale(0.95);
         }
 
-        ul {
-            list-style: none;
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 5px;
+        .glass-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        ul::-webkit-scrollbar {
-            width: 6px;
-        }
-        ul::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ul::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.3);
-            border-radius: 10px;
+        #timerDisplay {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-variant-numeric: tabular-nums;
+            transition: color 0.3s ease;
         }
 
-        .task-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: slideIn 0.3s ease forwards;
-            transition: all 0.3s ease;
+        .timer-finished {
+            color: #ff4757;
+            animation: pulse 1s infinite;
         }
 
-        .task-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .task-text {
-            flex: 1;
-            text-align: left;
-            margin-right: 10px;
-        }
-
-        .task-item.completed .task-text {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-
-        .delete-btn {
-            background: rgba(255, 59, 59, 0.4);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .delete-btn:hover {
-            background: rgba(255, 59, 59, 0.8);
-            transform: rotate(90deg);
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateX(20px); }
-        }
-
-        /* Responsive Design */
         @media (max-width: 480px) {
             .glass-container {
                 padding: 1.5rem;
                 width: 95%;
             }
             h1 { font-size: 1.5rem; }
-            .glass-btn { padding: 10px 15px; }
+            #timerDisplay { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Decorative Elements -->
     <div class="circle c1"></div>
     <div class="circle c2"></div>
     <div class="circle c3"></div>
 
-    <!-- Main Application Card -->
     <div class="glass-container">
         <h1>Task 7</h1>
-        <p class="subtitle">Web Development Final Project</p>
+        <p class="subtitle">Countdown Timer & Alert</p>
+
+        <div id="timerDisplay">00:00</div>
 
         <div class="input-group">
-            <input type="text" id="taskInput" placeholder="Add a new task..." autocomplete="off">
-            <button id="addBtn" class="glass-btn">Add +</button>
+            <input type="number" id="secondsInput" placeholder="Seconds" min="1" max="3600">
+            <button id="startBtn" class="glass-btn">Start</button>
         </div>
-
-        <ul id="taskList">
-            <!-- Tasks will be added here dynamically -->
-        </ul>
     </div>
 
     <script>
-        const taskInput = document.getElementById('taskInput');
-        const addBtn = document.getElementById('addBtn');
-        const taskList = document.getElementById('taskList');
+        let countdownInterval;
+        const display = document.getElementById('timerDisplay');
+        const input = document.getElementById('secondsInput');
+        const startBtn = document.getElementById('startBtn');
 
-        addBtn.addEventListener('click', addTask);
-        taskInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                addTask();
-            }
+        if ("Notification" in window) {
+            Notification.requestPermission();
+        }
+
+        startBtn.addEventListener('click', startTimer);
+        
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') startTimer();
         });
 
-        window.onload = () => {
-            createTaskElement("Complete Web Dev Assignment", true);
-        };
+        function startTimer() {
+            clearInterval(countdownInterval);
+            display.classList.remove('timer-finished');
+            
+            let seconds = parseInt(input.value);
 
-        function addTask() {
-            const taskText = taskInput.value.trim();
-
-            if (taskText === "") {
-                // Simple shake animation for empty input feedback
-                taskInput.style.border = "1px solid rgba(255, 100, 100, 0.8)";
-                setTimeout(() => {
-                    taskInput.style.border = "1px solid rgba(255, 255, 255, 0.2)";
-                }, 500);
+            if (isNaN(seconds) || seconds <= 0) {
+                input.style.border = "1px solid rgba(255, 100, 100, 0.8)";
+                setTimeout(() => input.style.border = "1px solid rgba(255, 255, 255, 0.2)", 500);
                 return;
             }
 
-            createTaskElement(taskText);
-            taskInput.value = ""; // Clear input
-            taskInput.focus();
+            startBtn.textContent = "Restart";
+            
+            updateDisplay(seconds);
+
+            countdownInterval = setInterval(() => {
+                seconds--;
+                updateDisplay(seconds);
+
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    timerFinished();
+                }
+            }, 1000);
         }
 
-        function createTaskElement(text, isDemo = false) {
-            const li = document.createElement('li');
-            li.className = 'task-item';
+        function updateDisplay(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const remainingSeconds = totalSeconds % 60;
             
-            const span = document.createElement('span');
-            span.className = 'task-text';
-            span.textContent = text;
+            const minStr = String(minutes).padStart(2, '0');
+            const secStr = String(remainingSeconds).padStart(2, '0');
             
-            span.addEventListener('click', () => {
-                li.classList.toggle('completed');
-            });
+            display.textContent = `${minStr}:${secStr}`;
+        }
 
-            const delBtn = document.createElement('button');
-            delBtn.className = 'delete-btn';
-            delBtn.innerHTML = '&times;';
-            delBtn.onclick = () => {
-                li.style.animation = 'fadeOut 0.3s ease forwards';
-                li.addEventListener('animationend', () => {
-                    li.remove();
+        function timerFinished() {
+            display.classList.add('timer-finished');
+            startBtn.textContent = "Start";
+
+            playBeep();
+
+            if (Notification.permission === "granted") {
+                new Notification("Time's Up!", {
+                    body: "Your countdown has finished.",
+                    icon: "https://cdn-icons-png.flaticon.com/512/850/850960.png" 
                 });
-            };
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification("Time's Up!");
+                    }
+                });
+            } 
+        }
 
-            li.appendChild(span);
-            li.appendChild(delBtn);
-            taskList.prepend(li);
+        function playBeep() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            
+            const ctx = new AudioContext();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 880; 
+            gainNode.gain.value = 0.1;
+
+            oscillator.start();
+            
+            setTimeout(() => gainNode.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.5), 100);
+            setTimeout(() => oscillator.stop(), 500);
         }
     </script>
 </body>
